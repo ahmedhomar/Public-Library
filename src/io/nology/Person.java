@@ -1,4 +1,7 @@
 package io.nology;
 
-public interface Person {
+public abstract class Person {
+  public String name = null;
+  public long id = 0;
+
 }

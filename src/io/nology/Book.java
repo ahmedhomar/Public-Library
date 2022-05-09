@@ -1,17 +1,31 @@
 package io.nology;
 
-public class Book {
+public abstract class Book {
     private int number;
     private String title;
     private String author;
     private String genre;
     private String subGenre;
     private String publisher;
+    private User borrowedBy;
 
-    public Book(String title, String author) {
+    public Book(String title, String author) { //constructor
         this.title = title;
         this.author = author;
+        this.number = 0;
+        this.borrowedBy = null;
+    } // end constructor
+
+
+    public User getBorrowedBy() { //getter
+        return borrowedBy;
     }
+
+    public void setBorrowedBy(User borrowedBy) { //setter
+        this.borrowedBy = borrowedBy;
+    }
+
+
 
     public int getNumber() {
         return number;
