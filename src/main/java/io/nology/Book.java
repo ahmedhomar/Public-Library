@@ -3,15 +3,14 @@ package io.nology;
 public abstract class Book {
     private int number;
     private String title;
-    private String author;
+
     private String genre;
     private String subGenre;
     private String publisher;
     private User borrowedBy;
 
-    public Book(String title, String author) { //constructor
+    public Book(String title) { //constructor
         this.title = title;
-        this.author = author;
         this.number = 0;
         this.borrowedBy = null;
     } // end constructor
@@ -43,13 +42,7 @@ public abstract class Book {
         this.title = title;
     }
 
-    public String getAuthor() {
-        return author;
-    }
 
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     public String getGenre() {
         return genre;

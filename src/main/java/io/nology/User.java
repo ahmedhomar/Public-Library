@@ -17,10 +17,17 @@ public class User extends Person {
     }
 
     public void borrowBook(Book book) {
-        if (borrowedBook == null && book.borrowedBy == null) {
+        if (borrowedBook == null && book.getBorrowedBy() == null) {
             borrowedBook = book;
-            book.borrowedBy = this;
+            book.setBorrowedBy(this);
         }
+//        public void returnBook() {
+//            if (borrowedBook != null && borrowedBook.getBorrowedBy() != null) {
+//                borrowedBook.setBorrowedBy(null);
+//                borrowedBook = null;
+//            }
+//        }
+
     }
 
 
