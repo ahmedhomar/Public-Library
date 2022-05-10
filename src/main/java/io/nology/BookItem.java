@@ -16,4 +16,8 @@ public class BookItem extends Book {
         this.author = author;
     }
 
+    @Override
+    public String toString() {
+        return String.format("\"%s\" by %s", getTitle(), author);
+    }
 }
