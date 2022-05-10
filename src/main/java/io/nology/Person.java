@@ -1,7 +1,18 @@
 package io.nology;
 
-public abstract class Person {
-  public String name = null;
-  public long id = 0;
+import java.util.UUID;
 
+public abstract class Person {
+  private String name;
+private final String id;
+
+  public Person(String name) {
+    this.name = this.name;
+    this.id = UUID.randomUUID().toString();
+  }
+
+  public Person(String id) {
+
+    this.id = id;
+  }
 }

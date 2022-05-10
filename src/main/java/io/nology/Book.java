@@ -1,7 +1,7 @@
 package io.nology;
 
 public abstract class Book {
-    private int number;
+    private String number;
     private String title;
 
     private String genre;
@@ -11,7 +11,7 @@ public abstract class Book {
 
     public Book(String title) { //constructor
         this.title = title;
-        this.number = 0;
+        this.number = null;
         this.borrowedBy = null;
     } // end constructor
 
@@ -26,11 +26,11 @@ public abstract class Book {
 
 
 
-    public int getNumber() {
+    public String  getNumber() {
         return number;
     }
 
-    public void setNumber(int number) {
+    public void setNumber(String number) {
         this.number = number;
     }
 

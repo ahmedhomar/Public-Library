@@ -5,6 +5,7 @@ public class User extends Person {
     private Book borrowedBook;
 
     public User(String username) {
+        super(id);
         this.username = username;
         this.borrowedBook = null;
     }
@@ -25,19 +26,20 @@ public class User extends Person {
         }
 
 
-//        public void returnBook() {
-//            if (borrowedBook != null && borrowedBook.getBorrowedBy() != null) {
-//                borrowedBook.setBorrowedBy(null);
-//                borrowedBook = null;
-//            }
-//        }
+
 
     }
 
     @Override
     public String toString() {
-        return name;
+        return username;
     }
 
 
+    public void returnBook() {
+        if (borrowedBook != null && borrowedBook.getBorrowedBy() != null) {
+            borrowedBook.setBorrowedBy(null);
+            borrowedBook = null;
+        }
+    }
 }
