@@ -1,12 +1,12 @@
 package io.nology;
 
-public class User extends Person {
-    private String username;
+public class User extends Account {
+
     private Book borrowedBook;
 
-    public User(String username) {
-        super(id);
-        this.username = username;
+    public User(String name) {
+        super(name);
+
         this.borrowedBook = null;
     }
 
@@ -26,13 +26,11 @@ public class User extends Person {
         }
 
 
-
-
     }
 
     @Override
     public String toString() {
-        return username;
+        return getName();
     }
 
 

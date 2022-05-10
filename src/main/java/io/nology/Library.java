@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public class Library {
 
-    private final HashMap repository;
+    private final HashMap<String, Book> repository;
     private final HashMap<String, User> users;
 
     // constructor
@@ -75,7 +75,7 @@ public class Library {
         }
     }
 
-    public static List<String> simulateLibrary(List<String> instructions) throws IOException {
+    public static ArrayList<String> simulateLibrary(List<String> instructions) throws IOException {
         Library library = new Library();
         ArrayList<String> output = new ArrayList<>();
 
@@ -94,15 +94,22 @@ public class Library {
             } else if (splitResult[0].equals("lookup")) {
                 splitResult = splitResult[1].split(" ", 2);
                 final String lookupParameter = splitResult[1];
-                if (splitResult[0].equals("id")) {
-                    ArrayList<Book> bookList = library.lookupBooks((book) -> book.getNumber().equals(lookupParameter));
-                    outputBooks(bookList, output, null);
-                } else if (splitResult[0].equals("title")) {
-                    ArrayList<Book> bookList = library.lookupBooks((book) -> book.getTitle().equals(lookupParameter));
-                    outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the title: %s", outputBookList.size(), lookupParameter));
-                } else if (splitResult[0].equals("author")) {
-                    ArrayList<Book> bookList = library.lookupBooks((book) -> (book instanceof BookItem) && ((BookItem)(book)).getAuthor().equals(lookupParameter));
-                    outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the author: %s", outputBookList.size(), lookupParameter));
+                switch (splitResult[0]) {
+                    case "id": {
+                        ArrayList<Book> bookList = library.lookupBooks((book) -> book.getNumber().equals(lookupParameter));
+                        outputBooks(bookList, output, null);
+                        break;
+                    }
+                    case "title": {
+                        ArrayList<Book> bookList = library.lookupBooks((book) -> book.getTitle().equals(lookupParameter));
+                        outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the title: %s", outputBookList.size(), lookupParameter));
+                        break;
+                    }
+                    case "author": {
+                        ArrayList<Book> bookList = library.lookupBooks((book) -> (book instanceof BookItem) && ((BookItem) (book)).getAuthor().equals(lookupParameter));
+                        outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the author: %s", outputBookList.size(), lookupParameter));
+                        break;
+                    }
                 }
             } else if (splitResult[0].equals("borrow")) {
                 splitResult = splitResult[1].split(" ", 2);
