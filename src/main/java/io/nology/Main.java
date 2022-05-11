@@ -29,13 +29,14 @@ public class Main {
     }
 }
 /*
-instructions = [
-        'register book 13 "Birth of a Theorem" by Villani, Cedric',
+example input:
+ [
+ 'register book 121 "Macbeth" by Shakespeare, William',
         'borrow 20 Heisenberg, Werner',
-        'lookup number 11',
-        'lookup title Machine Learning for Hackers',
-        'lookup author Camus, Albert',
-        'return Feynman, Richard',
+        'lookup number 13',
+
+        'lookup author Villani, Cedric',
+        'return Heisenberg, Werner',
         ]
 
  */

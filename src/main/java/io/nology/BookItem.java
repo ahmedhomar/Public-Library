@@ -4,15 +4,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class BookItem extends Book {
-    private String author;
-
 
     public BookItem(String title, String author) {
-        super(title);
-        this.author = author;
+        super(title, author);
+
     }
 
-    public static BookItem parseDef(String bookRepresentation) { // "title" by author
+
+    public static BookItem parseDefinition(String bookRepresentation) { // "title" by author
         Pattern pattern = Pattern.compile("\"(.*)\" by (.*)"); // "title" by author
         Matcher matcher = pattern.matcher(bookRepresentation); // "title" by author
         if (matcher.find()) { // if the string matches the pattern
@@ -22,16 +21,9 @@ public class BookItem extends Book {
         }
     }
 
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
 
     @Override
     public String toString() {
-        return String.format("\"%s\" by %s", getTitle(), author);      // "title" by author
+        return String.format("\"%s\" by %s", getTitle(), getAuthor());      // "title" by author
     }
 }

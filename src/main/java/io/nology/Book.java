@@ -1,19 +1,19 @@
 package io.nology;
 
 public abstract class Book {
+    private String author;
     private String number;
     private String title;
-
     private String genre;
     private String subGenre;
     private String publisher;
     private User borrowedBy;
 
-    public Book(String title) { //constructor
+    public Book(String author, String title) { //constructor
+        this.author = author; //initialize the fields
         this.title = title;
-        this.number = null;
-        this.borrowedBy = null;
-    } // end constructor
+
+    }
 
 
     public User getBorrowedBy() { //getter
@@ -24,25 +24,29 @@ public abstract class Book {
         this.borrowedBy = borrowedBy;
     }
 
-
-
-    public String  getNumber() {
+    public String getNumber() {
         return number;
-    }
-
-    public void setNumber(String number) {
-        this.number = number;
     }
 
     public String getTitle() {
         return title;
     }
 
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public void setNumber(String number) {
+        this.number = number;
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
-
-
 
     public String getGenre() {
         return genre;

@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public class Library {
 
-    private final HashMap<String,Book> repository;
+    private final HashMap<String, Book> repository;
     private final HashMap<String, User> users;
 
     // constructor
@@ -41,7 +41,7 @@ public class Library {
     }
 
     // get a book from the library
-    public List<Book> lookupBooks(Predicate<Book> lookupFn) { // lookup books that match the given predicate
+    public List<Book> lookupBooks(Predicate<Book> lookupFn) { // lookup books that match the given predicate (boolean-valued function): returns a list of books that match the predicate
         List<Book> result = new ArrayList<>();
         for (Book book : repository.values()) {
             if (lookupFn.test(book)) { // if the book matches the predicate, add it to the result
@@ -52,13 +52,13 @@ public class Library {
     }
 
     public static void outputBooks(List<Book> bookList, List<String> output, Function<List<Book>, String> multipleMatchOutput) { // output the books that match the given predicate
-        if (bookList.isEmpty()) {
-            output.add("No such book exists");
+        if (bookList.isEmpty()) { // if no books match the predicate, output "No books found"
+            output.add("No books found");
         } else if (bookList.size() == 1) {
             output.add(bookList.get(0).toString());
-            output.add(String.format("ID: %s", bookList.get(0).getNumber())); // get the book's ID
-            if (bookList.get(0).getBorrowedBy() != null) {
-                output.add(String.format("Borrowed by: %s", bookList.get(0).getBorrowedBy().toString()));
+            output.add(String.format("Number: %s", bookList.get(0).getNumber())); // get the book's number
+            if (bookList.get(0).getBorrowedBy() != null) { // if the book is borrowed, output the borrower's name
+                output.add(String.format("Borrowed by: %s", bookList.get(0).getBorrowedBy().toString())); // get the book's borrower
             }
         } else {
             if (multipleMatchOutput == null) { // if no output function is given, use the default one
@@ -86,7 +86,7 @@ public class Library {
                     splitResult = splitResult[1].split(" ", 3); // split the instruction into three parts
                     Book newBook = null;
                     if (splitResult[0].equals("book")) { // if the book is a book
-                        newBook = BookItem.parseDef(splitResult[2]); // parse the book definition
+                        newBook = BookItem.parseDefinition(splitResult[2]); // parse the book definition
                     }
                     if (newBook != null) { // if the book is valid, add it to the library
                         splitResult[1] = newBook.getNumber(); // set the book's ID
@@ -94,7 +94,7 @@ public class Library {
                     }
                     break;
                 case "lookup":
-                    splitResult = splitResult[1].split(" ", 2);
+                    splitResult = splitResult[1].split(" ", 2); // split the instruction into two parts
                     final String lookupParameter = splitResult[1];
                     switch (splitResult[0]) {
                         case "id": {
@@ -127,9 +127,6 @@ public class Library {
         }
         return output;
     }
-
-
-
 
 
 }

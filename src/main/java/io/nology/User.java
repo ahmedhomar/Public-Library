@@ -7,14 +7,7 @@ public class User extends Account {
     public User(String name) {
         super(name); // call superclass constructor
 
-        this.borrowedBook = null;
     }
-
-
-    public Book getBorrowedBook() {
-        return borrowedBook;
-    }
-
 
 
     public void borrowBook(Book book) {
@@ -23,14 +16,7 @@ public class User extends Account {
             book.setBorrowedBy(this);
         }
 
-
     }
-
-    @Override
-    public String toString() {
-        return getName();
-    } // return user's name
-
 
     public void returnBook() {
         if (borrowedBook != null && borrowedBook.getBorrowedBy() != null) { // if user has book and book is borrowed
@@ -38,4 +24,11 @@ public class User extends Account {
             borrowedBook = null; // set user's book to null
         }
     }
+
+    @Override // override superclass method
+    public String toString() {
+        return getName();
+    } // return user's name
+
+
 }
