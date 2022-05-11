@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public class Library {
 
-    private final HashMap<String, Book> repository;
+    private final HashMap repository;
     private final HashMap<String, User> users;
 
     // constructor
@@ -41,8 +41,8 @@ public class Library {
     }
 
     // get a book from the library
-    public ArrayList<Book> lookupBooks(Predicate<Book> lookupFn) { // lookup books that match the given predicate
-        ArrayList<Book> result = new ArrayList<>();
+    public List<Book> lookupBooks(Predicate<Book> lookupFn) { // lookup books that match the given predicate
+        List<Book> result = new ArrayList<>();
         for (Object book : repository.values()) {
             if (lookupFn.test((Book) book)) {
                 result.add((Book) book);
@@ -51,7 +51,7 @@ public class Library {
         return result;
     }
 
-    public static void outputBooks(ArrayList<Book> bookList, List<String> output, Function<ArrayList<Book>, String> multipleMatchOutput) {
+    public static void outputBooks(List<Book> bookList, List<String> output, Function<List<Book>, String> multipleMatchOutput) {
         if (bookList.isEmpty()) {
             output.add("No such book exists");
         } else if (bookList.size() == 1) {
@@ -75,49 +75,54 @@ public class Library {
         }
     }
 
-    public static ArrayList<String> simulateLibrary(List<String> instructions) throws IOException {
+    public static List<String> simulateLibrary(List<String> instructions) throws IOException {
         Library library = new Library();
-        ArrayList<String> output = new ArrayList<>();
+        List<String> output = new ArrayList<>();
 
         for (String instruction : instructions) {
             String[] splitResult = instruction.split(" ", 2);
-            if (splitResult[0].equals("register")) {
-                splitResult = splitResult[1].split(" ", 3);
-                Book newBook = null;
-                if (splitResult[0].equals("book")) {
-                    newBook = BookItem.parseDef(splitResult[2]);
-                }
-                if (newBook != null) {
+            switch (splitResult[0]) {
+                case "register":
+                    splitResult = splitResult[1].split(" ", 3);
+                    Book newBook = null;
+                    if (splitResult[0].equals("book")) {
+                        newBook = BookItem.parseDef(splitResult[2]);
+                    }
+                    if (newBook != null) {
 //                    newBook.getNumber() = splitResult[1];
-                    library.registerBook(newBook);
-                }
-            } else if (splitResult[0].equals("lookup")) {
-                splitResult = splitResult[1].split(" ", 2);
-                final String lookupParameter = splitResult[1];
-                switch (splitResult[0]) {
-                    case "id": {
-                        ArrayList<Book> bookList = library.lookupBooks((book) -> book.getNumber().equals(lookupParameter));
-                        outputBooks(bookList, output, null);
-                        break;
+                        library.registerBook(newBook);
                     }
-                    case "title": {
-                        ArrayList<Book> bookList = library.lookupBooks((book) -> book.getTitle().equals(lookupParameter));
-                        outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the title: %s", outputBookList.size(), lookupParameter));
-                        break;
+                    break;
+                case "lookup":
+                    splitResult = splitResult[1].split(" ", 2);
+                    final String lookupParameter = splitResult[1];
+                    switch (splitResult[0]) {
+                        case "id": {
+                            List<Book> bookList = library.lookupBooks((book) -> book.getNumber().equals(lookupParameter));
+                            outputBooks(bookList, output, null);
+                            break;
+                        }
+                        case "title": {
+                            List<Book> bookList = library.lookupBooks((book) -> book.getTitle().equals(lookupParameter));
+                            outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the title: %s", outputBookList.size(), lookupParameter));
+                            break;
+                        }
+                        case "author": {
+                            List<Book> bookList = library.lookupBooks((book) -> (book instanceof BookItem) && ((BookItem) (book)).getAuthor().equals(lookupParameter));
+                            outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the author: %s", outputBookList.size(), lookupParameter));
+                            break;
+                        }
                     }
-                    case "author": {
-                        ArrayList<Book> bookList = library.lookupBooks((book) -> (book instanceof BookItem) && ((BookItem) (book)).getAuthor().equals(lookupParameter));
-                        outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the author: %s", outputBookList.size(), lookupParameter));
-                        break;
+                    break;
+                case "borrow":
+                    splitResult = splitResult[1].split(" ", 2);
+                    if (library.repository.containsKey(splitResult[0])) {
+                        library.getUser(splitResult[1]).borrowBook((Book) library.repository.get(splitResult[0]));
                     }
-                }
-            } else if (splitResult[0].equals("borrow")) {
-                splitResult = splitResult[1].split(" ", 2);
-                if (library.repository.containsKey(splitResult[0])) {
-                    library.getUser(splitResult[1]).borrowBook((Book) library.repository.get(splitResult[0]));
-                }
-            } else if (splitResult[0].equals("return")) {
-                library.getUser(splitResult[1]).returnBook();
+                    break;
+                case "return":
+                    library.getUser(splitResult[1]).returnBook();
+                    break;
             }
         }
         return output;
