@@ -23,14 +23,14 @@ public class CsvFileToJsonFile {
     public static List<Map<?, ?>> readObjectsFromCsv(File file) throws IOException {
         CsvSchema bootstrap = CsvSchema.emptySchema().withHeader();
         CsvMapper csvMapper = new CsvMapper();
-        MappingIterator<Map<?, ?>> mappingIterator = csvMapper.reader(Map.class).with(bootstrap).readValues(file);
+        MappingIterator<Map<?, ?>> mappingIterator = csvMapper.reader(Map.class).with(bootstrap).readValues(file);  // returns a mapping iterator
 
         return mappingIterator.readAll();   // returns a list of maps
     }
 
     public static void writeAsJson(List<Map<?, ?>> data, File file) throws IOException {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.writeValue(file, data);
+        ObjectMapper mapper = new ObjectMapper();  // returns an object mapper
+        mapper.writeValue(file, data); // writes the list of maps to the file
     }
 }
 

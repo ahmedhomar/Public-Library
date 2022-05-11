@@ -1,28 +1,22 @@
 package io.nology;
 
 public abstract class Account {
-    private String name;
-    private String id;
+    private final String name;
+    private final String id;
 
-//  protected Account(String name, String id) {
-//    this.name = name;
-//    this.id = id;
-//  }
+    protected Account(String name) {
+        this.name = name;
+        this.id = "";    // initialize id
+    }
 
- protected Account(String name) {
-    this.name = "";
-    this.id = "";
-  }
-
-  public String getName() {
-    return name;
-  }
+    public String getName() {
+        return name;
+    }
 
 
-
-  public String getId() {
-    return id;
-  }
+    public String getId() {
+        return id;
+    }
 
 
 }

@@ -12,11 +12,11 @@ public class BookItem extends Book {
         this.author = author;
     }
 
-    public static BookItem parseDef(String bookRepresentation) {
+    public static BookItem parseDef(String bookRepresentation) { // "title" by author
         Pattern pattern = Pattern.compile("\"(.*)\" by (.*)");
         Matcher matcher = pattern.matcher(bookRepresentation);
-        if (matcher.find()) {
-            return new BookItem(matcher.group(1), matcher.group(2));
+        if (matcher.find()) { // if the string matches the pattern
+            return new BookItem(matcher.group(1), matcher.group(2)); // create a new BookItem with the title and author
         } else {
             return null;
         }
@@ -32,6 +32,6 @@ public class BookItem extends Book {
 
     @Override
     public String toString() {
-        return String.format("\"%s\" by %s", getTitle(), author);     // "title" by author
+        return String.format("\"%s\" by %s", getTitle(), author);      // "title" by author
     }
 }

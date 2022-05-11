@@ -18,15 +18,15 @@ public class Library {
 
     // constructor
     public Library() throws IOException {
-        InputStream getLocalJsonFile = new FileInputStream("src/main/java/io/nology/books.json");
-        repository = new ObjectMapper().readValue(getLocalJsonFile, HashMap.class);
-        System.out.println(repository);
+        InputStream getLocalJsonFile = new FileInputStream("src/main/java/io/nology/books.json"); // get the local json file
+        repository = new ObjectMapper().readValue(getLocalJsonFile, HashMap.class); // read the file and store the books in the repository
+
         users = new HashMap<>();
     }
 
     // add a book to the library
     public void registerBook(Book book) {
-        if (!repository.containsKey(book.getNumber())) {
+        if (!repository.containsKey(book.getNumber())) { // if the book does not exist, add it to the repository
             repository.put(book.getNumber(), book);
         }
     }
@@ -34,7 +34,7 @@ public class Library {
     // add a user to the library
 
     public User getUser(String name) {
-        if (!users.containsKey(name)) {
+        if (!users.containsKey(name)) { // if user does not exist, create a new one
             users.put(name, new User(name));
         }
         return users.get(name);
@@ -44,34 +44,34 @@ public class Library {
     public List<Book> lookupBooks(Predicate<Book> lookupFn) { // lookup books that match the given predicate
         List<Book> result = new ArrayList<>();
         for (Object book : repository.values()) {
-            if (lookupFn.test((Book) book)) {
+            if (lookupFn.test((Book) book)) { // if the book matches the predicate, add it to the result
                 result.add((Book) book);
             }
         }
         return result;
     }
 
-    public static void outputBooks(List<Book> bookList, List<String> output, Function<List<Book>, String> multipleMatchOutput) {
+    public static void outputBooks(List<Book> bookList, List<String> output, Function<List<Book>, String> multipleMatchOutput) { // output the books that match the given predicate
         if (bookList.isEmpty()) {
             output.add("No such book exists");
         } else if (bookList.size() == 1) {
             output.add(bookList.get(0).toString());
-            output.add(String.format("ID: %s", bookList.get(0).getNumber()));
+            output.add(String.format("ID: %s", bookList.get(0).getNumber())); // get the book's ID
             if (bookList.get(0).getBorrowedBy() != null) {
                 output.add(String.format("Borrowed by: %s", bookList.get(0).getBorrowedBy().toString()));
             }
         } else {
-            if (multipleMatchOutput == null) {
+            if (multipleMatchOutput == null) { // if no output function is given, use the default one
                 return;
             }
-            output.add(multipleMatchOutput.apply(bookList));
+            output.add(multipleMatchOutput.apply(bookList)); // use the output function
             int availableCount = 0;
             for (Book book : bookList) {
-                if (book.getBorrowedBy() == null) {
-                    availableCount++;
+                if (book.getBorrowedBy() == null) { // count the number of available books
+                    availableCount++; // if the book is available, increase the count
                 }
             }
-            output.add(String.format("%d book(s) available", availableCount));
+            output.add(String.format("%d book(s) available", availableCount)); // print the number of available books
         }
     }
 
@@ -89,7 +89,7 @@ public class Library {
                         newBook = BookItem.parseDef(splitResult[2]);
                     }
                     if (newBook != null) {
-//                    newBook.getNumber() = splitResult[1];
+                        splitResult[1] = newBook.getNumber();
                         library.registerBook(newBook);
                     }
                     break;

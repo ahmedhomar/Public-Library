@@ -2,10 +2,10 @@ package io.nology;
 
 public class User extends Account {
 
-    private Book borrowedBook;
+    private Book borrowedBook; // book that user is currently borrowing
 
     public User(String name) {
-        super(name);
+        super(name); // call superclass constructor
 
         this.borrowedBook = null;
     }
@@ -15,13 +15,11 @@ public class User extends Account {
         return borrowedBook;
     }
 
-    public void setBorrowedBook(Book borrowedBook) {
-        this.borrowedBook = borrowedBook;
-    }
+
 
     public void borrowBook(Book book) {
-        if (borrowedBook == null && book.getBorrowedBy() == null) {
-            borrowedBook = book;
+        if (borrowedBook == null && book.getBorrowedBy() == null) { // if user has no book and book is not borrowed
+            borrowedBook = book; // set user's book to book
             book.setBorrowedBy(this);
         }
 
@@ -31,13 +29,13 @@ public class User extends Account {
     @Override
     public String toString() {
         return getName();
-    }
+    } // return user's name
 
 
     public void returnBook() {
-        if (borrowedBook != null && borrowedBook.getBorrowedBy() != null) {
-            borrowedBook.setBorrowedBy(null);
-            borrowedBook = null;
+        if (borrowedBook != null && borrowedBook.getBorrowedBy() != null) { // if user has book and book is borrowed
+            borrowedBook.setBorrowedBy(null); // set book's borrower to null
+            borrowedBook = null; // set user's book to null
         }
     }
 }
