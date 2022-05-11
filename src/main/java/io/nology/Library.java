@@ -13,7 +13,7 @@ import java.util.function.Predicate;
 
 public class Library {
 
-    private final HashMap repository;
+    private final HashMap<String,Book> repository;
     private final HashMap<String, User> users;
 
     // constructor
@@ -43,9 +43,9 @@ public class Library {
     // get a book from the library
     public List<Book> lookupBooks(Predicate<Book> lookupFn) { // lookup books that match the given predicate
         List<Book> result = new ArrayList<>();
-        for (Object book : repository.values()) {
-            if (lookupFn.test((Book) book)) { // if the book matches the predicate, add it to the result
-                result.add((Book) book);
+        for (Book book : repository.values()) {
+            if (lookupFn.test(book)) { // if the book matches the predicate, add it to the result
+                result.add(book);
             }
         }
         return result;
@@ -80,16 +80,16 @@ public class Library {
         List<String> output = new ArrayList<>();
 
         for (String instruction : instructions) {
-            String[] splitResult = instruction.split(" ", 2);
+            String[] splitResult = instruction.split(" ", 2); // split the instruction into two parts
             switch (splitResult[0]) {
                 case "register":
-                    splitResult = splitResult[1].split(" ", 3);
+                    splitResult = splitResult[1].split(" ", 3); // split the instruction into three parts
                     Book newBook = null;
-                    if (splitResult[0].equals("book")) {
-                        newBook = BookItem.parseDef(splitResult[2]);
+                    if (splitResult[0].equals("book")) { // if the book is a book
+                        newBook = BookItem.parseDef(splitResult[2]); // parse the book definition
                     }
-                    if (newBook != null) {
-                        splitResult[1] = newBook.getNumber();
+                    if (newBook != null) { // if the book is valid, add it to the library
+                        splitResult[1] = newBook.getNumber(); // set the book's ID
                         library.registerBook(newBook);
                     }
                     break;
@@ -98,30 +98,30 @@ public class Library {
                     final String lookupParameter = splitResult[1];
                     switch (splitResult[0]) {
                         case "id": {
-                            List<Book> bookList = library.lookupBooks((book) -> book.getNumber().equals(lookupParameter));
-                            outputBooks(bookList, output, null);
+                            List<Book> bookList = library.lookupBooks((book) -> book.getNumber().equals(lookupParameter)); // lookup books with the given ID
+                            outputBooks(bookList, output, null); // output the books
                             break;
                         }
                         case "title": {
-                            List<Book> bookList = library.lookupBooks((book) -> book.getTitle().equals(lookupParameter));
-                            outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the title: %s", outputBookList.size(), lookupParameter));
+                            List<Book> bookList = library.lookupBooks(book -> book.getTitle().equals(lookupParameter)); // look up the books that match the given predicate
+                            outputBooks(bookList, output, outputBookList -> String.format("%d books match the title: %s", outputBookList.size(), lookupParameter)); // print the number of books that match the title
                             break;
                         }
                         case "author": {
-                            List<Book> bookList = library.lookupBooks((book) -> (book instanceof BookItem) && ((BookItem) (book)).getAuthor().equals(lookupParameter));
-                            outputBooks(bookList, output, (outputBookList) -> String.format("%d books match the author: %s", outputBookList.size(), lookupParameter));
+                            List<Book> bookList = library.lookupBooks(book -> (book instanceof BookItem) && ((BookItem) (book)).getAuthor().equals(lookupParameter)); // get the books that match the author
+                            outputBooks(bookList, output, outputBookList -> String.format("%d books match the author: %s", outputBookList.size(), lookupParameter)); // print the number of books that match the author
                             break;
                         }
                     }
                     break;
                 case "borrow":
                     splitResult = splitResult[1].split(" ", 2);
-                    if (library.repository.containsKey(splitResult[0])) {
-                        library.getUser(splitResult[1]).borrowBook((Book) library.repository.get(splitResult[0]));
+                    if (library.repository.containsKey(splitResult[0])) { // if the book is registered
+                        library.getUser(splitResult[1]).borrowBook(library.repository.get(splitResult[0]));  // borrow the book
                     }
                     break;
                 case "return":
-                    library.getUser(splitResult[1]).returnBook();
+                    library.getUser(splitResult[1]).returnBook(); // return the book
                     break;
             }
         }

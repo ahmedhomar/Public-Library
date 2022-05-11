@@ -13,8 +13,8 @@ public class BookItem extends Book {
     }
 
     public static BookItem parseDef(String bookRepresentation) { // "title" by author
-        Pattern pattern = Pattern.compile("\"(.*)\" by (.*)");
-        Matcher matcher = pattern.matcher(bookRepresentation);
+        Pattern pattern = Pattern.compile("\"(.*)\" by (.*)"); // "title" by author
+        Matcher matcher = pattern.matcher(bookRepresentation); // "title" by author
         if (matcher.find()) { // if the string matches the pattern
             return new BookItem(matcher.group(1), matcher.group(2)); // create a new BookItem with the title and author
         } else {
